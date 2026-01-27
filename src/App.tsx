@@ -35,29 +35,29 @@ function MainApp() {
   return (
     <div className="min-h-screen bg-orange-50 pb-6">
       <nav className="bg-orange-400 text-white p-4 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex space-x-4">
+        <div className="container mx-auto flex justify-between items-center gap-2">
+          <div className="flex space-x-1 sm:space-x-4 flex-1 overflow-x-auto">
             <button
-              className={`px-4 py-2 rounded ${page === "hammadde" ? "bg-orange-500" : "hover:bg-orange-500"}`}
+              className={`px-2 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${page === "hammadde" ? "bg-orange-500" : "hover:bg-orange-500"}`}
               onClick={() => setPage("hammadde")}
             >
               Hammadde
             </button>
             <button
-              className={`px-4 py-2 rounded ${page === "recete" ? "bg-orange-500" : "hover:bg-orange-500"}`}
+              className={`px-2 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${page === "recete" ? "bg-orange-500" : "hover:bg-orange-500"}`}
               onClick={() => setPage("recete")}
             >
               Reçete
             </button>
             <button
-              className={`px-4 py-2 rounded ${page === "maliyet" ? "bg-orange-500" : "hover:bg-orange-500"}`}
+              className={`px-2 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${page === "maliyet" ? "bg-orange-500" : "hover:bg-orange-500"}`}
               onClick={() => setPage("maliyet")}
             >
               Maliyet
             </button>
           </div>
           <button
-            className="px-4 py-2 rounded hover:bg-orange-500 bg-orange-600"
+            className="px-3 sm:px-4 py-2 rounded hover:bg-orange-500 bg-orange-600 text-sm sm:text-base whitespace-nowrap flex-shrink-0"
             onClick={logout}
           >
             Çıkış
