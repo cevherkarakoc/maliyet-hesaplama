@@ -7,7 +7,11 @@ interface Props {
 
 export default function ReceteDetayTable({ detay, onDelete }: Props) {
   const toplamGram = detay.reduce((sum, d) => sum + d.kullanimGram, 0);
-  const toplamTutar = detay.reduce((sum, d) => sum + ((d.kullanimGram / 1000) * d.hammadde.kiloFiyat), 0);
+  const toplamTutar = detay.reduce((sum, d) => {
+    const kiloFiyat = d.hammadde?.kiloFiyat ?? 0;
+    const kullanimGram = d.kullanimGram ?? 0;
+    return sum + ((kullanimGram / 1000) * kiloFiyat);
+  }, 0);
 
   return (
     <table className="w-full border-collapse border border-orange-200 bg-white rounded-lg overflow-hidden">
@@ -22,10 +26,10 @@ export default function ReceteDetayTable({ detay, onDelete }: Props) {
       <tbody>
         {detay.map(d => (
           <tr key={d.id} className="hover:bg-orange-25">
-            <td className="border border-orange-200 p-2 text-orange-700">{d.hammadde.hammaddeAdi}</td>
-            <td className="border border-orange-200 p-2 text-orange-600">{d.kullanimGram}</td>
+            <td className="border border-orange-200 p-2 text-orange-700">{d.hammadde?.hammaddeAdi || "-"}</td>
+            <td className="border border-orange-200 p-2 text-orange-600">{d.kullanimGram ?? 0}</td>
             <td className="border border-orange-200 p-2 text-orange-500 font-semibold">
-              {((d.kullanimGram / 1000) * d.hammadde.kiloFiyat).toFixed(2)} ₺
+              {(((d.kullanimGram ?? 0) / 1000) * (d.hammadde?.kiloFiyat ?? 0)).toFixed(2)} ₺
             </td>
             {onDelete && (
               <td className="border border-orange-200 p-2 text-center">

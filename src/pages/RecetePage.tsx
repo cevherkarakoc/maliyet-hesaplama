@@ -54,7 +54,7 @@ export default function RecetePage() {
       setDeleteDialog({
         open: true,
         hammaddeReceteId,
-        hammaddeAdi: hammadde.hammadde.hammaddeAdi
+        hammaddeAdi: hammadde?.hammadde?.hammaddeAdi
       });
     }
   };

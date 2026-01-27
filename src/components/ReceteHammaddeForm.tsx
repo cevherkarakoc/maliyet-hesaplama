@@ -42,8 +42,9 @@ export default function ReceteHammaddeForm({ receteId, onSuccess }: Props) {
         value={form.hammadde?.id || ""}
         onChange={e => setForm({ ...form, hammadde: { id: Number(e.target.value) } })}
         className="border border-orange-100 p-2 w-full rounded bg-white text-orange-700 focus:border-orange-200"
+        required
       >
-        <option>Hammadde seç</option>
+        <option value="" disabled>Hammadde seç</option>
         {hammaddeler.map(h => (
           <option key={h.id} value={h.id}>{h.hammaddeAdi}</option>
         ))}
@@ -54,6 +55,7 @@ export default function ReceteHammaddeForm({ receteId, onSuccess }: Props) {
         value={form.kullanimGram || ""}
         onChange={e => setForm({ ...form, kullanimGram: Number(e.target.value) })}
         className="border border-orange-100 p-2 w-full rounded focus:border-orange-200"
+        required
       />
       <button type="submit" className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded">
         Ekle
