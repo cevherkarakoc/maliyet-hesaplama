@@ -26,7 +26,7 @@ export default function HammaddeForm({ onSuccess, editing, onCancel }: Props) {
     setError(null);
     setSuccess(false);
     
-    const submitData = editing ? { ...form, id: editing.id } : form;
+    const submitData = editing ? { ...form, id: editing.id, aktifPasif: "A" } : form;
     
     HammaddeApi.kayit(submitData)
       .then(() => {
@@ -55,6 +55,7 @@ export default function HammaddeForm({ onSuccess, editing, onCancel }: Props) {
         value={form.hammaddeAdi || ""}
         onChange={e => setForm({ ...form, hammaddeAdi: e.target.value })}
         className="border border-orange-100 p-2 w-full rounded focus:border-orange-200"
+        required
       />
       <input
         type="number"
@@ -62,6 +63,7 @@ export default function HammaddeForm({ onSuccess, editing, onCancel }: Props) {
         value={form.kiloFiyat || ""}
         onChange={e => setForm({ ...form, kiloFiyat: Number(e.target.value) })}
         className="border border-orange-100 p-2 w-full rounded focus:border-orange-200"
+        required
       />
       <div className="flex gap-2">
         <button type="submit" className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded">

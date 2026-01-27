@@ -2,13 +2,13 @@ export interface TfHammadde {
   id: number;
   hammaddeAdi: string;
   kiloFiyat: number;
-  aktifPasif: "A" | "P";
+  aktifPasif: string;
 }
 
 export interface TfRecete {
   id: number;
   urunAdi: string;
-  aktifPasif: "A" | "P";
+  aktifPasif: string;
 }
 
 export interface TfHammaddeRecete {

@@ -26,7 +26,7 @@ export default function ReceteForm({ onSuccess, editing, onCancel }: Props) {
     setError(null);
     setSuccess(false);
     
-    const submitData = editing ? { ...form, id: editing.id } : form;
+    const submitData = editing ? { ...form, id: editing.id, aktifPasif: "A" } : form;
     
     ReceteApi.kayit(submitData)
       .then(() => {
@@ -50,6 +50,7 @@ export default function ReceteForm({ onSuccess, editing, onCancel }: Props) {
         value={form.urunAdi || ""}
         onChange={e => setForm({ ...form, urunAdi: e.target.value })}
         className="border border-orange-100 p-2 w-full rounded focus:border-orange-200"
+        required
       />
       <div className="flex gap-2">
         <button type="submit" className="bg-orange-400 hover:bg-orange-500 text-white px-4 py-2 rounded">
