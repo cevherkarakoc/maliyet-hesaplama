@@ -6,26 +6,29 @@ interface Props {
 }
 
 export default function ReceteDetayTable({ detay, onDelete }: Props) {
+  const toplamGram = detay.reduce((sum, d) => sum + d.kullanimGram, 0);
+  const toplamTutar = detay.reduce((sum, d) => sum + ((d.kullanimGram / 1000) * d.hammadde.kiloFiyat), 0);
+
   return (
-    <table className="w-full border border-orange-100 bg-white rounded">
+    <table className="w-full border-collapse border border-orange-200 bg-white rounded-lg overflow-hidden">
       <thead className="bg-orange-50">
         <tr>
-          <th className="border border-orange-100 p-2 text-orange-700">Hammadde</th>
-          <th className="border border-orange-100 p-2 text-orange-700">Gram</th>
-          <th className="border border-orange-100 p-2 text-orange-700">Tutar</th>
-          {onDelete && <th className="border border-orange-100 p-2 text-orange-700">İşlemler</th>}
+          <th className="border border-orange-200 p-2 text-orange-700">Hammadde</th>
+          <th className="border border-orange-200 p-2 text-orange-700">Gram</th>
+          <th className="border border-orange-200 p-2 text-orange-700">Tutar</th>
+          {onDelete && <th className="border border-orange-200 p-2 text-orange-700">İşlemler</th>}
         </tr>
       </thead>
       <tbody>
         {detay.map(d => (
           <tr key={d.id} className="hover:bg-orange-25">
-            <td className="border border-orange-100 p-2 text-orange-700">{d.hammadde.hammaddeAdi}</td>
-            <td className="border border-orange-100 p-2 text-orange-600">{d.kullanimGram}</td>
-            <td className="border border-orange-100 p-2 text-orange-500 font-semibold">
+            <td className="border border-orange-200 p-2 text-orange-700">{d.hammadde.hammaddeAdi}</td>
+            <td className="border border-orange-200 p-2 text-orange-600">{d.kullanimGram}</td>
+            <td className="border border-orange-200 p-2 text-orange-500 font-semibold">
               {((d.kullanimGram / 1000) * d.hammadde.kiloFiyat).toFixed(2)} ₺
             </td>
             {onDelete && (
-              <td className="border border-orange-100 p-2 text-center">
+              <td className="border border-orange-200 p-2 text-center">
                 <button
                   onClick={() => onDelete(d.id)}
                   className="bg-red-400 hover:bg-red-500 text-white px-2 py-1 rounded text-sm"
@@ -37,6 +40,13 @@ export default function ReceteDetayTable({ detay, onDelete }: Props) {
           </tr>
         ))}
       </tbody>
+      <tfoot className="bg-orange-100 font-semibold">
+        <tr>
+          <td colSpan={2} className="border border-orange-200 p-2 text-orange-800">TOPLAM</td>
+          <td className="border border-orange-200 p-2 text-orange-600">{toplamTutar.toFixed(2)} ₺</td>
+          {onDelete && <td className="border border-orange-200 p-2"></td>}
+        </tr>
+      </tfoot>
     </table>
   );
 }
