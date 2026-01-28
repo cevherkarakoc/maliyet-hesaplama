@@ -9,6 +9,7 @@ export interface TfRecete {
   id: number;
   urunAdi: string;
   aktifPasif: string;
+  olusanBirim: number;
 }
 
 export interface TfHammaddeRecete {

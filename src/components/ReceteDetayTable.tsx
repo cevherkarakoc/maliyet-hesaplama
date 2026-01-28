@@ -3,9 +3,10 @@ import { TfHammaddeRecete } from "../types/models";
 interface Props {
   detay: TfHammaddeRecete[];
   onDelete?: (hammaddeReceteId: number) => void;
+  olusanBirim?: number;
 }
 
-export default function ReceteDetayTable({ detay, onDelete }: Props) {
+export default function ReceteDetayTable({ detay, onDelete, olusanBirim }: Props) {
   const toplamGram = detay.reduce((sum, d) => sum + d.kullanimGram, 0);
   const toplamTutar = detay.reduce((sum, d) => {
     const kiloFiyat = d.hammadde?.kiloFiyat ?? 0;
@@ -46,8 +47,13 @@ export default function ReceteDetayTable({ detay, onDelete }: Props) {
       </tbody>
       <tfoot className="bg-orange-100 font-semibold">
         <tr>
-          <td colSpan={2} className="border border-orange-200 p-2 text-orange-800">TOPLAM</td>
-          <td className="border border-orange-200 p-2 text-orange-600">{toplamTutar.toFixed(2)} ₺</td>
+          <td colSpan={2} className="border border-orange-200 p-2 text-orange-800 text-right">TOPLAM MALİYET ({(olusanBirim || 1).toString().replace('.', ',')} KG/ADET)</td>
+          <td className="border border-orange-200 p-2 text-orange-600">{toplamTutar.toFixed(2).replace('.', ',')} ₺</td>
+          {onDelete && <td className="border border-orange-200 p-2"></td>}
+        </tr>
+        <tr>
+          <td colSpan={2} className="border border-orange-200 p-2 text-orange-800 text-right">1 KG/ADET MALİYETİ</td>
+          <td className="border border-orange-200 p-2 text-orange-600">{((olusanBirim && olusanBirim > 0 ? toplamTutar / olusanBirim : toplamTutar)).toFixed(2).replace('.', ',')} ₺</td>
           {onDelete && <td className="border border-orange-200 p-2"></td>}
         </tr>
       </tfoot>

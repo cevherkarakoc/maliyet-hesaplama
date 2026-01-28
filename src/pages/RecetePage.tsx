@@ -116,7 +116,8 @@ export default function RecetePage() {
                     }`}
                     onClick={() => handleReceteSelect(r)}
                   >
-                    <span className="text-orange-800 font-medium">{r.urunAdi}</span>
+                    <div className="text-orange-800 font-medium">{r.urunAdi}</div>
+                    <div className="text-xs text-orange-600 mt-1">Birim: {(r.olusanBirim || 0).toString().replace('.', ',')}</div>
                   </li>
                 ))}
               </ul>
@@ -162,7 +163,7 @@ export default function RecetePage() {
                 ) : (
                   <>
                     <ReceteHammaddeForm receteId={selectedRecete.id} onSuccess={() => loadDetay(selectedRecete.id)} />
-                    <ReceteDetayTable detay={detay} onDelete={handleDeleteHammadde} />
+                    <ReceteDetayTable detay={detay} onDelete={handleDeleteHammadde} olusanBirim={selectedRecete.olusanBirim} />
                   </>
                 )}
               </div>

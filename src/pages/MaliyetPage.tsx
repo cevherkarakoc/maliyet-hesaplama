@@ -64,13 +64,18 @@ export default function MaliyetPage() {
                   <li key={d.id} className="bg-orange-50 border border-orange-100 rounded p-1.5 text-xs grid grid-cols-3 gap-1 items-center">
                     <span className="font-medium text-orange-800 truncate">{d.hammadde.hammaddeAdi}</span>
                     <span className="text-orange-700 text-center">{d.kullanimGram}g</span>
-                    <span className="text-orange-600 font-semibold text-right">{(d.kullanimGram / 1000 * d.hammadde.kiloFiyat).toFixed(2)} ₺</span>
+                    <span className="text-orange-600 font-semibold text-right">{(d.kullanimGram / 1000 * d.hammadde.kiloFiyat).toFixed(2).replace('.', ',')} ₺</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-lg font-bold text-orange-700 mt-2 border-t border-orange-100 pt-1 text-right">
-                Toplam: {maliyetler[recete.id]?.toFixed(2) || "0.00"} ₺
-              </p>
+              <div className="mt-2 border-t border-orange-100 pt-1 space-y-1">
+                <p className="text-sm font-bold text-orange-700 text-right">
+                  Toplam ({(recete.olusanBirim || 1).toString().replace('.', ',')} Kg/Adet): {(maliyetler[recete.id] || 0).toFixed(2).replace('.', ',')} ₺
+                </p>
+                <p className="text-sm font-bold text-orange-800 text-right">
+                  1 Kg/Adet: {((recete.olusanBirim && recete.olusanBirim > 0 ? (maliyetler[recete.id] || 0) / recete.olusanBirim : maliyetler[recete.id] || 0)).toFixed(2).replace('.', ',')} ₺
+                </p>
+              </div>
             </div>
           </div>
         ))}

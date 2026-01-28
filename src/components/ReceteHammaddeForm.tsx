@@ -20,6 +20,10 @@ export default function ReceteHammaddeForm({ receteId, onSuccess }: Props) {
       .catch(err => setError(err.message));
   }, []);
 
+  useEffect(() => {
+    setForm({ recete: { id: receteId } });
+  }, [receteId]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
