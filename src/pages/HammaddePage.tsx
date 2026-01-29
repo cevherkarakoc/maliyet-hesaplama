@@ -8,6 +8,7 @@ export default function HammaddePage() {
   const [list, setList] = useState<TfHammadde[]>([]);
   const [editing, setEditing] = useState<TfHammadde | undefined>();
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const loadList = () => {
     HammaddeApi.list()
@@ -26,6 +27,10 @@ export default function HammaddePage() {
   const handleCancelEdit = () => {
     setEditing(undefined);
   };
+
+  const filteredList = list.filter(h => 
+    h.hammaddeAdi.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (error) {
     return <div className="text-red-500">Hata: {error}</div>;
@@ -62,8 +67,35 @@ export default function HammaddePage() {
             <div className="p-4 bg-orange-100 border-b rounded-t-lg border-orange-200">
               <h2 className="text-lg font-semibold text-orange-800">Hammaddeler</h2>
             </div>
+            <div className="p-4 border-b border-orange-100">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Hammadde ara..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="border border-orange-100 p-2 w-full rounded bg-white text-orange-700 focus:border-orange-200 pr-10"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-orange-400 hover:text-orange-600 p-1"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
             <div className="max-h-96 overflow-y-auto">
-              <HammaddeList list={list} onEdit={handleEdit} />
+              <HammaddeList list={filteredList} onEdit={handleEdit} />
+              {filteredList.length === 0 && list.length > 0 && (
+                <div className="p-4 text-center text-orange-500">
+                  Arama sonucu bulunamadı
+                </div>
+              )}
               {list.length === 0 && (
                 <div className="p-4 text-center text-orange-500">
                   Henüz hammadde bulunmuyor

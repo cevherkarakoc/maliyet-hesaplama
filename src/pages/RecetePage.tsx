@@ -17,6 +17,7 @@ export default function RecetePage() {
     hammaddeAdi: string;
   }>({ open: false, hammaddeReceteId: null, hammaddeAdi: '' });
   const [editingRecete, setEditingRecete] = useState<TfRecete | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const loadList = () => {
     ReceteApi.list()
@@ -76,6 +77,10 @@ export default function RecetePage() {
     setDeleteDialog({ open: false, hammaddeReceteId: null, hammaddeAdi: '' });
   };
 
+  const filteredList = list.filter(r => 
+    r.urunAdi.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (error) {
     return <div className="text-red-500">Hata: {error}</div>;
   }
@@ -104,9 +109,31 @@ export default function RecetePage() {
             <div className="p-4 bg-orange-100 border-b rounded-t-lg border-orange-200">
               <h2 className="text-lg font-semibold text-orange-800">Reçeteler</h2>
             </div>
+            <div className="p-4 border-b border-orange-100">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Reçete ara..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="border border-orange-100 p-2 w-full rounded bg-white text-orange-700 focus:border-orange-200 pr-10"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-orange-400 hover:text-orange-600 p-1"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
             <div className="max-h-96 overflow-y-auto">
               <ul className="divide-y divide-orange-50">
-                {list.map(r => (
+                {filteredList.map(r => (
                   <li
                     key={r.id}
                     className={`p-3 cursor-pointer transition-colors ${
@@ -121,6 +148,11 @@ export default function RecetePage() {
                   </li>
                 ))}
               </ul>
+              {filteredList.length === 0 && list.length > 0 && (
+                <div className="p-4 text-center text-orange-500">
+                  Arama sonucu bulunamadı
+                </div>
+              )}
               {list.length === 0 && (
                 <div className="p-4 text-center text-orange-500">
                   Henüz reçete bulunmuyor

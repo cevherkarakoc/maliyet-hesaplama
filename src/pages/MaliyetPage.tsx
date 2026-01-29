@@ -8,6 +8,7 @@ export default function MaliyetPage() {
   const [detaylar, setDetaylar] = useState<Record<number, TfHammaddeRecete[]>>({});
   const [maliyetler, setMaliyetler] = useState<Record<number, number>>({});
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     ReceteApi.list()
@@ -42,6 +43,10 @@ export default function MaliyetPage() {
     }
   }, [receteler]);
 
+  const filteredReceteler = receteler.filter(r => 
+    r.urunAdi.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (error) {
     return <div className="text-red-500">Hata: {error}</div>;
   }
@@ -52,8 +57,31 @@ export default function MaliyetPage() {
         <h1 className="text-3xl font-bold text-orange-800">Reçete Maliyetleri</h1>
       </div>
       
+      <div className="max-w-md mx-auto">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Reçete ara..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="border border-orange-200 p-3 w-full rounded-lg bg-white text-orange-700 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 pr-10"
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-orange-400 hover:text-orange-600 p-1"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        {receteler.map(recete => (
+        {filteredReceteler.map(recete => (
           <div key={recete.id} className="bg-white border border-orange-200 rounded-lg shadow-sm flex flex-col">
             <div className="p-3 bg-orange-100 border-b rounded-t-lg border-orange-200">
               <h2 className="text-base font-semibold text-orange-800">{recete.urunAdi}</h2>
@@ -80,6 +108,18 @@ export default function MaliyetPage() {
           </div>
         ))}
       </div>
+      
+      {filteredReceteler.length === 0 && receteler.length > 0 && (
+        <div className="bg-white border border-orange-200 rounded-lg shadow-sm p-8 text-center">
+          <div className="text-orange-400 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-orange-800 mb-2">Arama Sonucu Bulunamadı</h3>
+          <p className="text-orange-600">Aradığınız reçete bulunamadı. Lütfen farklı bir arama terimi deneyin.</p>
+        </div>
+      )}
       
       {receteler.length === 0 && (
         <div className="bg-white border border-orange-200 rounded-lg shadow-sm p-8 text-center">
