@@ -4,7 +4,7 @@
 
 [[redirects]]
   from = "/stu-be/*"
-  to = "http://195.85.216.67/stu-be/:splat"
+  to = "/.netlify/functions/proxy"
   status = 200
   force = true
 
