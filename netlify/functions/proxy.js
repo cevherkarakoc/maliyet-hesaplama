@@ -1,41 +1,27 @@
 export async function handler(event) {
-  console.log("=== STU-BE PROXY HIT ===");
-  console.log("Path:", event.path);
-  console.log("Method:", event.httpMethod);
-  console.log("Query:", event.rawQuery);
+  console.log("PATH:", event.path);
+  console.log("RAW QUERY:", event.rawQuery);
 
-  const path = event.path.replace('/stu-be', '');
+  const backendPath = event.path.replace('/.netlify/functions/proxy', '');
   const query = event.rawQuery ? `?${event.rawQuery}` : '';
-  const targetUrl = `http://195.85.216.67/stu-be${path}${query}`;
 
-  console.log("Target URL:", targetUrl);
+  const targetUrl = `http://195.85.216.67/stu-be${backendPath}${query}`;
 
-  try {
-    const response = await fetch(targetUrl, {
-      method: event.httpMethod,
-      headers: {
-        ...event.headers,
-        host: '195.85.216.67'
-      },
-      body: ['GET', 'HEAD'].includes(event.httpMethod)
-        ? undefined
-        : event.body
-    });
+  console.log("TARGET:", targetUrl);
 
-    console.log("Response status:", response.status);
+  const response = await fetch(targetUrl, {
+    method: event.httpMethod,
+    headers: {
+      ...event.headers,
+      host: '195.85.216.67'
+    },
+    body: ['GET', 'HEAD'].includes(event.httpMethod) ? undefined : event.body
+  });
 
-    const data = await response.text();
+  const data = await response.text();
 
-    return {
-      statusCode: response.status,
-      body: data
-    };
-  } catch (err) {
-    console.error("Proxy error:", err);
-
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message })
-    };
-  }
+  return {
+    statusCode: response.status,
+    body: data
+  };
 }
