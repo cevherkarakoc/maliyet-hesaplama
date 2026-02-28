@@ -1,19 +1,41 @@
 export async function handler(event) {
+  console.log("=== STU-BE PROXY HIT ===");
+  console.log("Path:", event.path);
+  console.log("Method:", event.httpMethod);
+  console.log("Query:", event.rawQuery);
+
   const path = event.path.replace('/stu-be', '');
-  const url = `http://195.85.216.67/stu-be${path}`;
+  const query = event.rawQuery ? `?${event.rawQuery}` : '';
+  const targetUrl = `http://195.85.216.67/stu-be${path}${query}`;
 
-  const response = await fetch(url, {
-    method: event.httpMethod,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: event.body
-  });
+  console.log("Target URL:", targetUrl);
 
-  const data = await response.text();
+  try {
+    const response = await fetch(targetUrl, {
+      method: event.httpMethod,
+      headers: {
+        ...event.headers,
+        host: '195.85.216.67'
+      },
+      body: ['GET', 'HEAD'].includes(event.httpMethod)
+        ? undefined
+        : event.body
+    });
 
-  return {
-    statusCode: response.status,
-    body: data
-  };
+    console.log("Response status:", response.status);
+
+    const data = await response.text();
+
+    return {
+      statusCode: response.status,
+      body: data
+    };
+  } catch (err) {
+    console.error("Proxy error:", err);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message })
+    };
+  }
 }
