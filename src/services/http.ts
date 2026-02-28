@@ -1,6 +1,6 @@
-const BASE_URL = "/.netlify/functions/proxy/tf";
+//const BASE_URL = "/.netlify/functions/proxy/tf";
 //const BASE_URL = "/stu-be/tf";
-//const BASE_URL = "http://195.85.216.67/stu-be/tf";
+const BASE_URL = "http://195.85.216.67/stu-be/tf";
 
 function getAuthToken(): string {
   const username = localStorage.getItem("auth_username");
