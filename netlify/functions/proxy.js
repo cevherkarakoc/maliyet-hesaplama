@@ -8,6 +8,14 @@ export async function handler(event) {
   const targetUrl = `http://195.85.216.67/stu-be${backendPath}${query}`;
 
   console.log("TARGET:", targetUrl);
+  console.log("TARGET:", {
+    method: event.httpMethod,
+    headers: {
+      ...event.headers,
+      host: '195.85.216.67'
+    },
+    body: ['GET', 'HEAD'].includes(event.httpMethod) ? undefined : event.body
+  });
 
   const response = await fetch(targetUrl, {
     method: event.httpMethod,
