@@ -11,8 +11,7 @@ export async function handler(event) {
   console.log("TARGET:", {
     method: event.httpMethod,
     headers: {
-      ...event.headers,
-      host: '195.85.216.67'
+      ...event.headers
     },
     body: ['GET', 'HEAD'].includes(event.httpMethod) ? undefined : event.body
   });
@@ -20,11 +19,11 @@ export async function handler(event) {
   const response = await fetch(targetUrl, {
     method: event.httpMethod,
     headers: {
-      ...event.headers,
-      host: '195.85.216.67'
+      ...event.headers
     },
     body: ['GET', 'HEAD'].includes(event.httpMethod) ? undefined : event.body
   });
+  console.log('THEN', response)
 
   const data = await response.text();
 
